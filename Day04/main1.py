@@ -30,11 +30,27 @@ def count_points(matching: list) -> list:
     return count
 
 
+def total_cards(matching: dict) -> list:
+    total = {}
+    for k in matching:
+        total[k] = 1
+    for k, v in matching.items():
+        print(f"\tk: {k} v: {v}")
+        for i in range(len(v)):
+            print(f"\t\tk + 1 + i: {k + 1 + i}")
+            total[k + i] += 1
+    print("+"*10)
+    print(total)
+    print("+"*10)
+    return sorted(total)
+
+
 def main(file_name):
     with open(file_name, 'r') as file:
         lines = file.readlines()
         l = 0
         p_sum = 0
+        m_dict = {}
         for line in lines:
             l += 1
             winning  = get_winning_numbers(line)
@@ -42,8 +58,17 @@ def main(file_name):
             matching = get_matching(winning, my)
             points   = count_points(matching)
             p_sum += points
+            m_dict[l] = matching
             print(f"{l}. ({points}) {matching}")
-        print(f"\nPoints sum: {p_sum}")
+        print(f"\nPoints sum: {p_sum}\n\nPart two:")
+        total = total_cards(m_dict)
+        total_dict = {i:total.count(i) for i in total}
+        total_cards_count = 0 
+        for i in total_dict:
+            total_cards_count += total_dict[i]
+        print(total)
+        print(total_dict)
+        print(total_cards_count)
 
 
 if __name__ == "__main__":
